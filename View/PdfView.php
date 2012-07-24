@@ -78,7 +78,14 @@ class PdfView extends View {
  * @return string The rendered view.
  */
 	public function render($view = null, $layout = null) {
-		$content = parent::render($view, $layout);
+		if ($this->response->type() == 'text/html') {
+			$this->subDir = null;
+		}
+		try {
+			$content = parent::render($view, $layout);
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
 		if ($this->response->type() == 'text/html') {
 			return $content;
 		}
